@@ -1,60 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header\GameLoop">
+      <UniqueIdentifier>{b318d0ad-1409-498f-900f-c83fd0551200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\GameLoop\Gameplay">
+      <UniqueIdentifier>{5aad90e6-0cde-4d80-acff-7e0d029fa0d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source\GameLoop">
+      <UniqueIdentifier>{4685afd3-d078-4b9a-a50e-c10b438627b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameLoop\Gameplay">
+      <UniqueIdentifier>{d3c4dc1c-b78c-4959-a30d-0a9307ea386e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\Event\EventPollingManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\GameWindow\GameWindowManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\GameLoop\GameLoop.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\UI\SplashScreen\SplashScreenManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\Time\TimeManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="source\Sound\SoundManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameLoop\Gameplay\Board.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameLoop\Gameplay\GameplayManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UI\UIElements\Button\Button.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameLoop\Gameplay\Cell.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Event\EventPollingManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="header\GameWindow\GameWindowManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\GameLoop\GameLoop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\UI\SplashScreenManager\SplashScreenManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="header\Time\TimeManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="header\Sound\SoundManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\UI\SplashScreen\SplashScreenManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\GameLoop\GameLoop.h">
+      <Filter>Header\GameLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="header\GameLoop\Gameplay\GameplayManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\UI\UIElements\Button\Button.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\GameLoop\Gameplay\Cell.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
