@@ -14,7 +14,18 @@ namespace Gameplay
 	}
 	void Board::createBoard()
 	{
-		cell = new Cell(83, 83, sf::Vector2i(0, 0));
+		float cell_width = getCellWidthInBoard();
+		float cell_height = getCellHeightInBoard();
+
+		cell = new Cell(cell_width, cell_height, sf::Vector2i(0, 0));
+	}
+	float Board::getCellWidthInBoard() const
+	{
+		return (boardWidth - horizontalCellPadding) / numberOfRows;
+	}
+	float Board::getCellHeightInBoard() const
+	{
+		return (boardHeight - verticalCellPadding) / numberOfColoums;
 	}
 	void Board::initializeBoardImage()
 	{

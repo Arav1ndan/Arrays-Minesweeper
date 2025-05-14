@@ -4,6 +4,7 @@
 #include "../../header/GameLoop/Gameplay/Cell.h"
 #include "../../header/Event/EventPollingManager.h"
 
+
 namespace Gameplay {
 	class Board {
 	private:
@@ -12,6 +13,12 @@ namespace Gameplay {
 		const float boardHeight = 1080.0f;
 		const float boardPosition = 530.0f;
 
+		static const int numberOfRows = 9;
+		static const int numberOfColoums = 9;
+
+		const float horizontalCellPadding = 115.0f;
+		const float verticalCellPadding = 329.0f;
+
 		const std::string boardTexturePath = "assets/textures/board.png";
 
 		sf::Texture boardTexture;
@@ -19,6 +26,9 @@ namespace Gameplay {
 		void initializeBoardImage();
 		void initialize();
 		void createBoard();
+
+		float getCellWidthInBoard() const;
+		float getCellHeightInBoard() const;
 
 	public:
 		Board();
