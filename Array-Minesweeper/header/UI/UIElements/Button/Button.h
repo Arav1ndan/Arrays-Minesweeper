@@ -2,8 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../../header/Event/EventPollingManager.h"
 #include "../../header/Sound/SoundManager.h"
-//#include "../../header/GameLoop/Gameplay/Cell.h"
-#include <functional>
+
 
 
 namespace UIElements{
@@ -25,6 +24,7 @@ namespace UIElements{
 
 	public:
 		Button(const sf::String& texture_path, const sf::Vector2f& position, float width, float height);
+		void setTextureRect(const sf::IntRect& rect);
 		void render(sf::RenderWindow& window) const;
 	};
 }
