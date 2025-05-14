@@ -7,6 +7,23 @@ using namespace UIElements;
 
 namespace Gameplay
 {
+	enum class CellState {
+		HIDDEN,
+		OPEN,
+		FLAGGED,
+	};
+	enum class CellType {
+		EMPTY,
+		ONE,
+		TWO,
+		THREE,
+		FOUR,
+		FIVE,
+		SIX,
+		SEVEN,
+		EIGHT,
+		MINE,
+	};
 	class Cell {
 	private:
 		sf::Vector2i position;
@@ -19,10 +36,19 @@ namespace Gameplay
 
 		void initialize(float width, float height, sf::Vector2i position);
 
+		CellState current_cell_state;
+		CellType cell_type;
 	public:
 		Cell(float width, float height, sf::Vector2i position);
 		~Cell() = default;
 
 		void render(sf::RenderWindow& window);
+
+		CellState getCellState() const;
+		void setCellState(CellState state);
+		CellType getCellType() const;
+		void setCellType(CellType type);
+
+		void setCellTexture();
 	};
 }
