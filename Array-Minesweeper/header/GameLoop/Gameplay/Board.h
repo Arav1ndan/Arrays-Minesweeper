@@ -8,7 +8,7 @@
 namespace Gameplay {
 	class Board {
 	private:
-		Cell* cell;
+		
 		const float boardWidth = 866.0f;
 		const float boardHeight = 1080.0f;
 		const float boardPosition = 530.0f;
@@ -18,6 +18,8 @@ namespace Gameplay {
 
 		const float horizontalCellPadding = 115.0f;
 		const float verticalCellPadding = 329.0f;
+
+		Cell* cell[numberOfColoums];
 
 		const std::string boardTexturePath = "assets/textures/board.png";
 
@@ -29,6 +31,7 @@ namespace Gameplay {
 
 		float getCellWidthInBoard() const;
 		float getCellHeightInBoard() const;
+		
 
 	public:
 		Board();
