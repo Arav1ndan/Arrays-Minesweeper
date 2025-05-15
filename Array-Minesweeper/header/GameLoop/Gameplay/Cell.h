@@ -42,7 +42,7 @@ namespace Gameplay
 		CellState current_cell_state;
 		CellType cell_type;
 
-		sf::Vector2f getcellScreenPosition() const;
+		sf::Vector2f getcellScreenPosition(float width, float height) const;
 	public:
 		Cell(float width, float height, sf::Vector2i position);
 		~Cell() = default;
