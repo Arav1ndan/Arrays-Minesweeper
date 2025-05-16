@@ -19,7 +19,7 @@ namespace Gameplay {
 		const float horizontalCellPadding = 115.0f;
 		const float verticalCellPadding = 329.0f;
 
-		Cell* cell[numberOfColoums];
+		Cell* cell[numberOfRows][numberOfColoums];
 
 		const std::string boardTexturePath = "assets/textures/board.png";
 
