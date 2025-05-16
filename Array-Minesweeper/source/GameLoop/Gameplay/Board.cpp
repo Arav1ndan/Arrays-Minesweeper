@@ -40,6 +40,7 @@ namespace Gameplay
 	void Board::populateBoard()
 	{
 		populateMines();
+		populateCells();
 	}
 	void Board::populateMines()
 	{
@@ -55,12 +56,46 @@ namespace Gameplay
 			if (cell[x][y]->getCellType() != CellType::MINE) {
 
 				cell[x][y]->setCellType(CellType::MINE);
-				cell[x][y]->setCellState(CellState::OPEN);
+				//cell[x][y]->setCellState(CellState::OPEN);
 				++mines_placed;
 			}
 		}		
 	}
 	
+	int Board::countMinesAround(sf::Vector2i cell_position)
+	{
+		int mines_around = 0;
+
+		for (int a = -1; a <= 1; ++a) {
+			for (int b = -1;b <= 1;b++) {
+				if ((a == 0 && b == 0) || !isVaildCellPosition(sf::Vector2i(cell_position.x + a, cell_position.y + b)))
+					continue;
+
+				if (cell[cell_position.x + a][cell_position.y + b]->getCellType() == CellType::MINE) {
+					mines_around++;
+				}
+			}
+		}
+		return mines_around;
+	}
+
+	void Board::populateCells()
+	{
+		for (int row = 0; row < numberOfRows;row++) {
+			for (int col = 0; col < numberOfColoums; col++) {
+				if (cell[row][col]->getCellType() != CellType::MINE) {
+					int mines_around = countMinesAround(sf::Vector2i(row, col));
+					cell[row][col]->setCellType(static_cast<CellType>(mines_around));
+				}
+			}
+		}
+	}
+
+	bool Board::isVaildCellPosition(sf::Vector2i cell_position)
+	{
+		return (cell_position.x >= 0 && cell_position.y >= 0 && cell_position.x < numberOfColoums && cell_position.y < numberOfRows);
+	}
+
 	void Board::initializeBoardImage()
 	{
 		if (!boardTexture.loadFromFile(boardTexturePath)) {

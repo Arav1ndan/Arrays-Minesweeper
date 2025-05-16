@@ -24,6 +24,9 @@ namespace Gameplay {
 
 		Cell* cell[numberOfRows][numberOfColoums];
 
+		int countMinesAround(sf::Vector2i cell_positio);
+		void populateCells();
+		bool isVaildCellPosition(sf::Vector2i cell_position);
 		static const int minesCount = 9;
 		const std::string boardTexturePath = "assets/textures/board.png";
 

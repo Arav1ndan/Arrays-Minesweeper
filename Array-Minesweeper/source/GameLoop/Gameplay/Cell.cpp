@@ -8,7 +8,7 @@ namespace Gameplay {
 		sf::Vector2f cellScreenPosition = getcellScreenPosition(width, heigth);
 		cell_button = new Button(cell_texture_path, cellScreenPosition, width * slice_count, heigth);
 
-		//initialize(width,heigth,position);
+		initialize(width,heigth,position);
 	}
 	void Cell::initialize(float width, float height, sf::Vector2i position)
 	{
@@ -16,7 +16,8 @@ namespace Gameplay {
 		sf::Vector2f cellScreenPosition = getcellScreenPosition(width, height);
 		//sf::Vector2f float_position(static_cast <float>(position.x), static_cast <float>(position.y));
 		cell_button = new Button(cell_texture_path, cellScreenPosition, width * slice_count, height);
-		current_cell_state = CellState::OPEN;
+		current_cell_state = CellState::HIDDEN;
+		//setCellTexture();
 	}
 	sf::Vector2f Cell::getcellScreenPosition(float width, float height) const
 	{

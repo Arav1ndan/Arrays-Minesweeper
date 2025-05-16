@@ -8,8 +8,9 @@ using namespace UIElements;
 namespace Gameplay
 {
 	enum class CellState {
-		HIDDEN,
+		
 		OPEN,
+		HIDDEN,
 		FLAGGED,
 	};
 	enum class CellType {
