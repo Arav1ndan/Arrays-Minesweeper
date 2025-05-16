@@ -8,6 +8,9 @@
 namespace Gameplay {
 	class Board {
 	private:
+
+		std::default_random_engine randomEngine;
+		std::random_device randomDevice;
 		
 		const float boardWidth = 866.0f;
 		const float boardHeight = 1080.0f;
@@ -21,6 +24,7 @@ namespace Gameplay {
 
 		Cell* cell[numberOfRows][numberOfColoums];
 
+		static const int minesCount = 9;
 		const std::string boardTexturePath = "assets/textures/board.png";
 
 		sf::Texture boardTexture;
@@ -31,6 +35,10 @@ namespace Gameplay {
 
 		float getCellWidthInBoard() const;
 		float getCellHeightInBoard() const;
+
+		void populateBoard();
+		void populateMines();
+		void initializeVariables();
 		
 
 	public:

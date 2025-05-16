@@ -10,7 +10,13 @@ namespace Gameplay
 	void Board::initialize()
 	{
 		initializeBoardImage();
+		initializeVariables();
 		createBoard();
+		populateBoard();
+	}
+	void Board::initializeVariables()
+	{
+		randomEngine.seed(randomDevice());
 	}
 	void Board::createBoard()
 	{
@@ -20,10 +26,8 @@ namespace Gameplay
 		for (int row = 0; row < numberOfRows; ++row) {
 			for (int col = 0; col < numberOfColoums; ++col) {
 				cell[row][col] = new Cell(cell_width, cell_height, sf::Vector2i(row,col));
-			}
-			
-		}
-	
+			}			
+		}	
 	}
 	float Board::getCellWidthInBoard() const
 	{
@@ -33,6 +37,30 @@ namespace Gameplay
 	{
 		return (boardHeight - verticalCellPadding) / numberOfColoums;
 	}
+	void Board::populateBoard()
+	{
+		populateMines();
+	}
+	void Board::populateMines()
+	{
+		std::uniform_int_distribution<int> x_dist(0, numberOfColoums - 1);
+		std::uniform_int_distribution<int> y_dist(0, numberOfRows - 1);
+
+		int mines_placed = 0;
+		while (mines_placed < minesCount)
+		{
+			int x = x_dist(randomEngine);
+			int y = y_dist(randomEngine);
+
+			if (cell[x][y]->getCellType() != CellType::MINE) {
+
+				cell[x][y]->setCellType(CellType::MINE);
+				cell[x][y]->setCellState(CellState::OPEN);
+				++mines_placed;
+			}
+		}		
+	}
+	
 	void Board::initializeBoardImage()
 	{
 		if (!boardTexture.loadFromFile(boardTexturePath)) {
@@ -54,5 +82,4 @@ namespace Gameplay
 		}
 	
 	}
-
 }
