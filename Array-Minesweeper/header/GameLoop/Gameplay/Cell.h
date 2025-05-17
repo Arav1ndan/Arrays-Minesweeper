@@ -55,7 +55,8 @@ namespace Gameplay
 
 		sf::Vector2i getCellPosition();
 		void render(sf::RenderWindow& window);
-
+		bool canOpenCell() const;
+		void open();
 		CellState getCellState() const;
 		void setCellState(CellState state);
 		CellType getCellType() const;

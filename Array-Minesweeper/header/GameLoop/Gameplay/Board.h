@@ -35,6 +35,7 @@ namespace Gameplay {
 		void initializeBoardImage();
 		void initialize();
 		void createBoard();
+		void openCell(sf::Vector2i cell_position);
 
 		float getCellWidthInBoard() const;
 		float getCellHeightInBoard() const;
