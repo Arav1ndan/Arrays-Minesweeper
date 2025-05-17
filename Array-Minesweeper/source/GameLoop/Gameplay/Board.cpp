@@ -7,6 +7,14 @@ namespace Gameplay
 	{
 		initialize();
 	}
+	void Board::update(Event::EventPollingManager& eventManager, sf::RenderWindow& window)
+	{
+		for (int row = 0;row < numberOfRows; row++) {
+			for (int col = 0; col < numberOfColoums; col++) {
+				cell[row][col]->update(eventManager, window);
+			}
+		}
+	}
 	void Board::initialize()
 	{
 		initializeBoardImage();
@@ -25,7 +33,7 @@ namespace Gameplay
 
 		for (int row = 0; row < numberOfRows; ++row) {
 			for (int col = 0; col < numberOfColoums; ++col) {
-				cell[row][col] = new Cell(cell_width, cell_height, sf::Vector2i(row,col));
+				cell[row][col] = new Cell(cell_width, cell_height, sf::Vector2i(row,col), this);
 			}			
 		}	
 	}
@@ -95,6 +103,7 @@ namespace Gameplay
 	{
 		return (cell_position.x >= 0 && cell_position.y >= 0 && cell_position.x < numberOfColoums && cell_position.y < numberOfRows);
 	}
+
 
 	void Board::initializeBoardImage()
 	{
