@@ -7,9 +7,12 @@ using namespace UIElements;
 
 namespace Gameplay
 {
+	class Board;
+	class Cell;
 	enum class CellState {
-		HIDDEN,
+		
 		OPEN,
+		HIDDEN,
 		FLAGGED,
 	};
 	enum class CellType {
@@ -28,6 +31,8 @@ namespace Gameplay
 	private:
 		sf::Vector2i position;
 
+		Board* board;
+
 		const int tile_size = 128;
 		const int slice_count = 12;
 		const float cell_top_offset = 274.0f;
@@ -37,23 +42,26 @@ namespace Gameplay
 
 		Button* cell_button;
 
-		void initialize(float width, float height, sf::Vector2i position);
-
+		void initialize(float width, float height, sf::Vector2i position,Board* board);
+		void registerCellButtonCallBack();
+		void cellButtonCallback(MouseButtonType butto_type);
 		CellState current_cell_state;
 		CellType cell_type;
 
 		sf::Vector2f getcellScreenPosition(float width, float height) const;
 	public:
-		Cell(float width, float height, sf::Vector2i position);
+		Cell(float width, float height, sf::Vector2i position, Board* board);
 		~Cell() = default;
 
+		sf::Vector2i getCellPosition();
 		void render(sf::RenderWindow& window);
-
+		bool canOpenCell() const;
+		void open();
 		CellState getCellState() const;
 		void setCellState(CellState state);
 		CellType getCellType() const;
 		void setCellType(CellType type);
-
+		void update(Event::EventPollingManager& eventManager, sf::RenderWindow& window);
 		void setCellTexture();
 	};
 }

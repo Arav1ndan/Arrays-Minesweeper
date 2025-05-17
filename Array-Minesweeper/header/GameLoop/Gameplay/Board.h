@@ -24,6 +24,9 @@ namespace Gameplay {
 
 		Cell* cell[numberOfRows][numberOfColoums];
 
+		int countMinesAround(sf::Vector2i cell_positio);
+		void populateCells();
+		bool isVaildCellPosition(sf::Vector2i cell_position);
 		static const int minesCount = 9;
 		const std::string boardTexturePath = "assets/textures/board.png";
 
@@ -32,6 +35,7 @@ namespace Gameplay {
 		void initializeBoardImage();
 		void initialize();
 		void createBoard();
+		void openCell(sf::Vector2i cell_position);
 
 		float getCellWidthInBoard() const;
 		float getCellHeightInBoard() const;
@@ -43,6 +47,8 @@ namespace Gameplay {
 
 	public:
 		Board();
+		void onCellButtonClicked(sf::Vector2i cell_position, MouseButtonType mouse_button_type);
+		void update(Event::EventPollingManager& eventManager, sf::RenderWindow& window);
 		void render(sf::RenderWindow& window);
 	};
 }
