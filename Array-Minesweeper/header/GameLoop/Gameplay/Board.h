@@ -10,9 +10,11 @@ using namespace UIElement;
 
 namespace Gameplay {
 	class Cell;
+	class GameplayManager;
 	class Board {
 	private:
 
+		GameplayManager* gameplay_manager;
 		std::default_random_engine randomEngine;
 		std::random_device randomDevice;
 		
@@ -39,7 +41,8 @@ namespace Gameplay {
 		sf::Texture boardTexture;
 		sf::Sprite boardSprite;
 		void initializeBoardImage();
-		void initialize();
+		void initialize(GameplayManager* gameplay_manager);
+		void initializeVariables(GameplayManager* gameplay_manager);
 		void createBoard();
 		
 		void openCell(sf::Vector2i cell_position);
@@ -50,18 +53,21 @@ namespace Gameplay {
 
 		void populateBoard();
 		void populateMines();
-		void initializeVariables();
+		
 
 
 		void processCellType(sf::Vector2i cell_position);
 
 		void processEmptyCell(sf::Vector2i cell_position);
 		
+		void processMineCell(sf::Vector2i cell_position);
 
 	public:
-		Board();
+		Board(GameplayManager* gameplay_manager);
 		void onCellButtonClicked(sf::Vector2i cell_position, MouseButtonType mouse_button_type);
 		void update(Event::EventPollingManager& eventManager, sf::RenderWindow& window);
 		void render(sf::RenderWindow& window);
+
+		void revealAllMines();
 	};
 }

@@ -1,25 +1,29 @@
 #include "../../header/GameLoop/Gameplay/Board.h"
 #include "../../header/GameLoop/Gameplay/Cell.h"
+
+#include "../../header/GameLoop/Gameplay/GameplayManager.h"
+
 #include <iostream>
 
 namespace Gameplay
 {
 	
-	Board::Board()
+	Board::Board(GameplayManager* gameplay_manager)
 	{
-		initialize();
+		initialize(gameplay_manager);
 	}
 	
 	
-	void Board::initialize()
+	void Board::initialize(GameplayManager* gameplay_manager)
 	{
 		initializeBoardImage();
-		initializeVariables();
+		initializeVariables(gameplay_manager);
 		createBoard();
 		populateBoard();
 	}
-	void Board::initializeVariables()
+	void Board::initializeVariables(GameplayManager* gameplay_manager)
 	{
+		this->gameplay_manager = gameplay_manager;
 		randomEngine.seed(randomDevice());
 	}
 	void Board::createBoard()
@@ -153,6 +157,7 @@ namespace Gameplay
 		}
 	
 	}
+	
 	void Board::processCellType(sf::Vector2i cell_position)
 	{
 		
@@ -163,7 +168,7 @@ namespace Gameplay
 			processEmptyCell(cell_position);
 			break;
 		case CellType::MINE:
-			//
+			processMineCell(cell_position);
 			break;
 		default:
 			cell[cell_position.x][cell_position.y]->open();
@@ -199,6 +204,22 @@ namespace Gameplay
 				}
 
 				openCell(next_cell_position);
+			}
+		}
+	}
+	void Board::processMineCell(sf::Vector2i cell_position)
+	{
+		gameplay_manager->setGameResult(GameResult::LOST);
+		Sound::SoundManager::PlaySound(Sound::SoundType::EXPLOSION);
+		revealAllMines();
+	}
+	void Board::revealAllMines()
+	{
+		for (int row = 0; row < numberOfRows;row++) {
+			for (int col = 0; col < numberOfColoums;col++) {
+				if (cell[row][col]->getCellType() == CellType::MINE) {
+					cell[row][col]->setCellState(CellState::OPEN);
+				}
 			}
 		}
 	}
