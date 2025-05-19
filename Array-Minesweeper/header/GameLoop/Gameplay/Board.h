@@ -51,6 +51,11 @@ namespace Gameplay {
 		void populateBoard();
 		void populateMines();
 		void initializeVariables();
+
+
+		void processCellType(sf::Vector2i cell_position);
+
+		void processEmptyCell(sf::Vector2i cell_position);
 		
 
 	public:
