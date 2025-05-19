@@ -1,4 +1,5 @@
 #include "../../header/GameLoop/Gameplay/Board.h"
+#include "../../header/GameLoop/Gameplay/Cell.h"
 #include <iostream>
 
 namespace Gameplay
@@ -7,24 +8,8 @@ namespace Gameplay
 	{
 		initialize();
 	}
-	void Board::onCellButtonClicked(sf::Vector2i cell_position, MouseButtonType mouse_button_type)
-	{
-		if (mouse_button_type == MouseButtonType::LEFT_MOUSE_BUTTON) {
-			Sound::SoundManager::PlaySound(Sound::SoundType::BUTTON_CLICK);
-			openCell(cell_position);
-		}
-		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON) {
-			
-		}
-	}
-	void Board::update(Event::EventPollingManager& eventManager, sf::RenderWindow& window)
-	{
-		for (int row = 0;row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfColoums; col++) {
-				cell[row][col]->update(eventManager, window);
-			}
-		}
-	}
+	
+	
 	void Board::initialize()
 	{
 		initializeBoardImage();
@@ -47,11 +32,35 @@ namespace Gameplay
 			}			
 		}	
 	}
+	void Board::update(Event::EventPollingManager& eventManager, sf::RenderWindow& window)
+	{
+		for (int row = 0;row < numberOfRows; row++) {
+			for (int col = 0; col < numberOfColoums; col++) {
+				cell[row][col]->update(eventManager, window);
+			}
+		}
+	}
+	void Board::onCellButtonClicked(sf::Vector2i cell_position, MouseButtonType mouse_button_type)
+	{
+		if (mouse_button_type == MouseButtonType::LEFT_MOUSE_BUTTON) {
+			Sound::SoundManager::PlaySound(Sound::SoundType::BUTTON_CLICK);
+			openCell(cell_position);
+		}
+		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON) {
+			Sound::SoundManager::PlaySound(Sound::SoundType::FLAG);
+			toggleFlag(cell_position);
+		}
+	}
 	void Board::openCell(sf::Vector2i cell_position)
 	{
 		if (!cell[cell_position.x][cell_position.y]->canOpenCell()) {
 			return;
 		}
+	}
+	void Board::toggleFlag(sf::Vector2i cell_position)
+	{
+		cell[cell_position.x][cell_position.y]->toggleFlag();
+		flaggerCells += (cell[cell_position.x][cell_position.y]->getCellState() == CellState::FLAGGED) ? 1 : -1;
 	}
 	float Board::getCellWidthInBoard() const
 	{

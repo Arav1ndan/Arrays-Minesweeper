@@ -1,11 +1,15 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include <random>
-#include "../../header/GameLoop/Gameplay/Cell.h"
+#include "../../header/UI/UIElements/Button/Button.h"
 #include "../../header/Event/EventPollingManager.h"
+//#include "../../header/GameLoop/Gameplay/Cell.h"
+#include "../../header/Sound/SoundManager.h"
 
+using namespace UIElement;
 
 namespace Gameplay {
+	class Cell;
 	class Board {
 	private:
 
@@ -19,12 +23,14 @@ namespace Gameplay {
 		static const int numberOfRows = 9;
 		static const int numberOfColoums = 9;
 
+		int flaggerCells;
+
 		const float horizontalCellPadding = 115.0f;
 		const float verticalCellPadding = 329.0f;
 
 		Cell* cell[numberOfRows][numberOfColoums];
 
-		int countMinesAround(sf::Vector2i cell_positio);
+		int countMinesAround(sf::Vector2i cell_position);
 		void populateCells();
 		bool isVaildCellPosition(sf::Vector2i cell_position);
 		static const int minesCount = 9;
@@ -35,8 +41,10 @@ namespace Gameplay {
 		void initializeBoardImage();
 		void initialize();
 		void createBoard();
+		
 		void openCell(sf::Vector2i cell_position);
-
+		
+		void toggleFlag(sf::Vector2i cell_position);
 		float getCellWidthInBoard() const;
 		float getCellHeightInBoard() const;
 

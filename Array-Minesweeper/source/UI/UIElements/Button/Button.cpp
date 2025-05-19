@@ -1,6 +1,6 @@
 #include "../../header/UI/UIElements/Button/Button.h"
 #include <iostream>
-namespace UIElements {
+namespace UIElement {
 	
 	Button::Button(const sf::String& texture_path, const sf::Vector2f& position, float width, float height)
 	{
@@ -22,6 +22,7 @@ namespace UIElements {
 		
 	}
 	bool Button::isMouseOnSprite(Event::EventPollingManager& event_manager, const sf::RenderWindow& window) {
+		
 		sf::Vector2i mouse_position = event_manager.getMousePosition();
 
 		return button_sprite.getGlobalBounds().contains(static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y));
