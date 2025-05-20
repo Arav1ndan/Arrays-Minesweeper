@@ -2,13 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include "../../header/UI/UIElements/Button/Button.h"
 #include "../../header/Event/EventPollingManager.h"
+//#include "../../header/GameLoop/Gameplay/Board.h"
 
-using namespace UIElements;
+using namespace UIElement;
+
 
 namespace Gameplay
 {
-	class Board;
-	class Cell;
+	
 	enum class CellState {
 		
 		OPEN,
@@ -27,6 +28,7 @@ namespace Gameplay
 		EIGHT,
 		MINE,
 	};
+	class Board;
 	class Cell {
 	private:
 		sf::Vector2i position;
@@ -44,19 +46,25 @@ namespace Gameplay
 
 		void initialize(float width, float height, sf::Vector2i position,Board* board);
 		void registerCellButtonCallBack();
-		void cellButtonCallback(MouseButtonType butto_type);
+		void cellButtonCallback(MouseButtonType button_type);
+
+
 		CellState current_cell_state;
 		CellType cell_type;
 
 		sf::Vector2f getcellScreenPosition(float width, float height) const;
 	public:
 		Cell(float width, float height, sf::Vector2i position, Board* board);
+		sf::Vector2i getCellPosition();
 		~Cell() = default;
 
-		sf::Vector2i getCellPosition();
+		
 		void render(sf::RenderWindow& window);
+		
 		bool canOpenCell() const;
 		void open();
+		
+		void toggleFlag();
 		CellState getCellState() const;
 		void setCellState(CellState state);
 		CellType getCellType() const;

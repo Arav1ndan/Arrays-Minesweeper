@@ -1,12 +1,15 @@
 #include "../../header/GameLoop/Gameplay/Cell.h"
+#include "../../header/GameLoop/Gameplay/Board.h"
+//#include "../../header/UI/UIElements/Button/Button.h"
+#include <iostream>
 
 namespace Gameplay {
 	
 	Cell::Cell(float width, float heigth, sf::Vector2i position, Board* board)
 	{
-		this->position = position;
-		sf::Vector2f cellScreenPosition = getcellScreenPosition(width, heigth);
-		cell_button = new Button(cell_texture_path, cellScreenPosition, width * slice_count, heigth);
+		//this->position = position;
+		//sf::Vector2f cellScreenPosition = getcellScreenPosition(width, heigth);
+		//cell_button = new Button(cell_texture_path, cellScreenPosition, width * slice_count, heigth);
 
 		initialize(width,heigth,position,board);
 	}
@@ -19,6 +22,7 @@ namespace Gameplay {
 		cell_button = new Button(cell_texture_path, cellScreenPosition, width * slice_count, height);
 		current_cell_state = CellState::HIDDEN;
 		//setCellTexture();
+		registerCellButtonCallBack();
 	}
 	void Cell::registerCellButtonCallBack()
 	{
@@ -52,6 +56,15 @@ namespace Gameplay {
 	void Cell::open()
 	{
 		setCellState(CellState::OPEN);
+	}
+	void Cell::toggleFlag()
+	{
+		if (current_cell_state == CellState::HIDDEN) {
+			setCellState(CellState::FLAGGED);
+		}
+		else if (current_cell_state == CellState::FLAGGED) {
+			setCellState(CellState::HIDDEN);
+		}
 	}
 	CellState Cell::getCellState() const
 	{

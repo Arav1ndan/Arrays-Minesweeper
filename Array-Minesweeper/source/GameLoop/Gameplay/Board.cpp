@@ -1,40 +1,31 @@
 #include "../../header/GameLoop/Gameplay/Board.h"
+#include "../../header/GameLoop/Gameplay/Cell.h"
+
+#include "../../header/GameLoop/Gameplay/GameplayManager.h"
+
 #include <iostream>
 
 namespace Gameplay
 {
-	Board::Board()
+	
+	Board::Board(GameplayManager* gameplay_manager)
 	{
-		initialize();
+		initialize(gameplay_manager);
 	}
-	void Board::onCellButtonClicked(sf::Vector2i cell_position, MouseButtonType mouse_button_type)
-	{
-		if (mouse_button_type == MouseButtonType::LEFT_MOUSE_BUTTON) {
-			Sound::SoundManager::PlaySound(Sound::SoundType::BUTTON_CLICK);
-			openCell(cell_position);
-		}
-		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON) {
-			
-		}
-	}
-	void Board::update(Event::EventPollingManager& eventManager, sf::RenderWindow& window)
-	{
-		for (int row = 0;row < numberOfRows; row++) {
-			for (int col = 0; col < numberOfColoums; col++) {
-				cell[row][col]->update(eventManager, window);
-			}
-		}
-	}
-	void Board::initialize()
+	
+	
+	void Board::initialize(GameplayManager* gameplay_manager)
 	{
 		initializeBoardImage();
-		initializeVariables();
+		initializeVariables(gameplay_manager);
 		createBoard();
-		populateBoard();
+		//populateBoard();
 	}
-	void Board::initializeVariables()
+	void Board::initializeVariables(GameplayManager* gameplay_manager)
 	{
+		this->gameplay_manager = gameplay_manager;
 		randomEngine.seed(randomDevice());
+		boardState = BoardState::FIRST_CELL;
 	}
 	void Board::createBoard()
 	{
@@ -47,11 +38,40 @@ namespace Gameplay
 			}			
 		}	
 	}
+	void Board::update(Event::EventPollingManager& eventManager, sf::RenderWindow& window)
+	{
+		for (int row = 0;row < numberOfRows; row++) {
+			for (int col = 0; col < numberOfColoums; col++) {
+				cell[row][col]->update(eventManager, window);
+			}
+		}
+	}
+	void Board::onCellButtonClicked(sf::Vector2i cell_position, MouseButtonType mouse_button_type)
+	{
+		if (mouse_button_type == MouseButtonType::LEFT_MOUSE_BUTTON) {
+			Sound::SoundManager::PlaySound(Sound::SoundType::BUTTON_CLICK);
+			openCell(cell_position);
+		}
+		else if (mouse_button_type == MouseButtonType::RIGHT_MOUSE_BUTTON) {
+			Sound::SoundManager::PlaySound(Sound::SoundType::FLAG);
+			toggleFlag(cell_position);
+		}
+	}
 	void Board::openCell(sf::Vector2i cell_position)
 	{
 		if (!cell[cell_position.x][cell_position.y]->canOpenCell()) {
 			return;
 		}
+		if (boardState == BoardState::FIRST_CELL) {
+			populateBoard(cell_position);
+			boardState = BoardState::PLAYING;
+		}
+		processCellType(cell_position);
+	}
+	void Board::toggleFlag(sf::Vector2i cell_position)
+	{
+		cell[cell_position.x][cell_position.y]->toggleFlag();
+		flaggerCells += (cell[cell_position.x][cell_position.y]->getCellState() == CellState::FLAGGED) ? 1 : -1;
 	}
 	float Board::getCellWidthInBoard() const
 	{
@@ -61,12 +81,12 @@ namespace Gameplay
 	{
 		return (boardHeight - verticalCellPadding) / numberOfColoums;
 	}
-	void Board::populateBoard()
+	void Board::populateBoard(sf::Vector2i cell_position)
 	{
 		populateMines();
 		populateCells();
 	}
-	void Board::populateMines()
+	void Board::populateMines(sf::Vector2i first_cell_position)
 	{
 		std::uniform_int_distribution<int> x_dist(0, numberOfColoums - 1);
 		std::uniform_int_distribution<int> y_dist(0, numberOfRows - 1);
@@ -77,12 +97,13 @@ namespace Gameplay
 			int x = x_dist(randomEngine);
 			int y = y_dist(randomEngine);
 
-			if (cell[x][y]->getCellType() != CellType::MINE) {
+			if (isInvaildMinePosition(first_cell_position, x, y))
+				continue;
 
 				cell[x][y]->setCellType(CellType::MINE);
 				//cell[x][y]->setCellState(CellState::OPEN);
 				++mines_placed;
-			}
+			
 		}		
 	}
 	
@@ -115,9 +136,9 @@ namespace Gameplay
 		}
 	}
 
-	bool Board::isVaildCellPosition(sf::Vector2i cell_position)
+	bool Board::isVaildCellPosition(sf::Vector2i first_cell_position, int x, int y)
 	{
-		return (cell_position.x >= 0 && cell_position.y >= 0 && cell_position.x < numberOfColoums && cell_position.y < numberOfRows);
+		return (x == first_cell_position.x && y == first_cell_position.y) || cell[x][y]->getCellType() == CellType::MINE;
 	}
 
 
@@ -141,5 +162,79 @@ namespace Gameplay
 			}
 		}
 	
+	}
+	
+	void Board::processCellType(sf::Vector2i cell_position)
+	{
+		
+
+		switch (cell[cell_position.x][cell_position.y]->getCellType())
+		{
+		case CellType::EMPTY:
+			processEmptyCell(cell_position);
+			break;
+		case CellType::MINE:
+			processMineCell(cell_position);
+			break;
+		default:
+			cell[cell_position.x][cell_position.y]->open();
+			break;
+		}
+	}
+	void Board::processEmptyCell(sf::Vector2i cell_position)
+	{
+		CellState cell_state = cell[cell_position.x][cell_position.y]->getCellState();
+
+		switch (cell_state)
+		{
+		case::Gameplay::CellState::OPEN:
+			return;
+		default:
+			cell[cell_position.x][cell_position.y]->open();
+			break;
+		}
+
+		for (int a = -1; a <= 1;a++) {
+			for (int b = -1;b <= 1;b++) {
+				sf::Vector2i next_cell_position = sf::Vector2i(a + cell_position.x, b + cell_position.y);
+
+				if ((a == 0 && b == 0) || !isVaildCellPosition(next_cell_position)) {
+					continue;
+				}
+
+				CellState next_cell_state = cell[next_cell_position.x][next_cell_position.y]->getCellState();
+
+				if (next_cell_state == CellState::FLAGGED)
+				{
+					toggleFlag(next_cell_position);
+				}
+
+				openCell(next_cell_position);
+			}
+		}
+	}
+	void Board::processMineCell(sf::Vector2i cell_position)
+	{
+		gameplay_manager->setGameResult(GameResult::LOST);
+		Sound::SoundManager::PlaySound(Sound::SoundType::EXPLOSION);
+		revealAllMines();
+	}
+	void Board::revealAllMines()
+	{
+		for (int row = 0; row < numberOfRows;row++) {
+			for (int col = 0; col < numberOfColoums;col++) {
+				if (cell[row][col]->getCellType() == CellType::MINE) {
+					cell[row][col]->setCellState(CellState::OPEN);
+				}
+			}
+		}
+	}
+	BoardState Board::getBoardState() const
+	{
+		return BoardState();
+	}
+	void Board::setBoardState(BoardState state)
+	{
+		boardState = state;
 	}
 }

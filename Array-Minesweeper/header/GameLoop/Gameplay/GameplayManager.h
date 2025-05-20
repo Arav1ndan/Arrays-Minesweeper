@@ -2,12 +2,19 @@
 #include "../../header/GameLoop/Gameplay/Board.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+using namespace Event;
 namespace Gameplay {
+    enum class GameResult {
+        NONE,
+        WON,
+        LOST
+    };
 	  class GameplayManager
     {
     private:
         Board* board;
 
+        GameResult game_result;
         
         void initialize();
         void initializeVariables();
@@ -18,11 +25,14 @@ namespace Gameplay {
         std::string background_texture_path = "assets/textures/minesweeper_bg.png";
 
         void initializeBackgroundImage();
-
+        
+        bool hasGameEnded();
     public:
         GameplayManager();
         ~GameplayManager() = default;
         void update(Event::EventPollingManager& eventManager, sf::RenderWindow& window);
         void render(sf::RenderWindow& window);
+
+        void setGameResult(GameResult gameResult);
     };
 }
