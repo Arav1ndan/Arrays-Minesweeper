@@ -57,6 +57,11 @@ namespace Gameplay {
 	{
 		setCellState(CellState::OPEN);
 	}
+	void Cell::reset()
+	{
+		current_cell_state = CellState::HIDDEN;  // Back to hidden
+		cell_type = CellType::EMPTY;
+	}
 	void Cell::toggleFlag()
 	{
 		if (current_cell_state == CellState::HIDDEN) {

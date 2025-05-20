@@ -64,6 +64,8 @@ namespace Gameplay
 		bool canOpenCell() const;
 		void open();
 		
+		void reset();
+
 		void toggleFlag();
 		CellState getCellState() const;
 		void setCellState(CellState state);

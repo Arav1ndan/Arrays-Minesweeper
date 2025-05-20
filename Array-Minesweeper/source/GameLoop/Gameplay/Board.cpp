@@ -202,6 +202,18 @@ namespace Gameplay
 	{
 		return minesCount - flaggedCells;
 	}
+
+	void Board::reset()
+	{
+		for (int row = 0; row < numberOfRows; ++row) {
+			for (int col = 0; col < numberOfColoums; ++col) {
+				cell[row][col]->reset();  // Reset each cell
+			}
+		}
+
+		flaggedCells = 0;  // No flags placed
+		boardState = BoardState::FIRST_CELL;
+	}
 	
 	void Board::processCellType(sf::Vector2i cell_position)
 	{
