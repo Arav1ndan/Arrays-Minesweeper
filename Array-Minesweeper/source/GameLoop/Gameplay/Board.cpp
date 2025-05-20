@@ -19,12 +19,13 @@ namespace Gameplay
 		initializeBoardImage();
 		initializeVariables(gameplay_manager);
 		createBoard();
-		populateBoard();
+		//populateBoard();
 	}
 	void Board::initializeVariables(GameplayManager* gameplay_manager)
 	{
 		this->gameplay_manager = gameplay_manager;
 		randomEngine.seed(randomDevice());
+		boardState = BoardState::FIRST_CELL;
 	}
 	void Board::createBoard()
 	{
@@ -61,6 +62,10 @@ namespace Gameplay
 		if (!cell[cell_position.x][cell_position.y]->canOpenCell()) {
 			return;
 		}
+		if (boardState == BoardState::FIRST_CELL) {
+			populateBoard(cell_position);
+			boardState = BoardState::PLAYING;
+		}
 		processCellType(cell_position);
 	}
 	void Board::toggleFlag(sf::Vector2i cell_position)
@@ -76,12 +81,12 @@ namespace Gameplay
 	{
 		return (boardHeight - verticalCellPadding) / numberOfColoums;
 	}
-	void Board::populateBoard()
+	void Board::populateBoard(sf::Vector2i cell_position)
 	{
 		populateMines();
 		populateCells();
 	}
-	void Board::populateMines()
+	void Board::populateMines(sf::Vector2i first_cell_position)
 	{
 		std::uniform_int_distribution<int> x_dist(0, numberOfColoums - 1);
 		std::uniform_int_distribution<int> y_dist(0, numberOfRows - 1);
@@ -92,12 +97,13 @@ namespace Gameplay
 			int x = x_dist(randomEngine);
 			int y = y_dist(randomEngine);
 
-			if (cell[x][y]->getCellType() != CellType::MINE) {
+			if (isInvaildMinePosition(first_cell_position, x, y))
+				continue;
 
 				cell[x][y]->setCellType(CellType::MINE);
 				//cell[x][y]->setCellState(CellState::OPEN);
 				++mines_placed;
-			}
+			
 		}		
 	}
 	
@@ -130,9 +136,9 @@ namespace Gameplay
 		}
 	}
 
-	bool Board::isVaildCellPosition(sf::Vector2i cell_position)
+	bool Board::isVaildCellPosition(sf::Vector2i first_cell_position, int x, int y)
 	{
-		return (cell_position.x >= 0 && cell_position.y >= 0 && cell_position.x < numberOfColoums && cell_position.y < numberOfRows);
+		return (x == first_cell_position.x && y == first_cell_position.y) || cell[x][y]->getCellType() == CellType::MINE;
 	}
 
 
@@ -222,5 +228,13 @@ namespace Gameplay
 				}
 			}
 		}
+	}
+	BoardState Board::getBoardState() const
+	{
+		return BoardState();
+	}
+	void Board::setBoardState(BoardState state)
+	{
+		boardState = state;
 	}
 }

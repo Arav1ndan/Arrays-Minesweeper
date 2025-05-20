@@ -9,10 +9,17 @@
 using namespace UIElement;
 
 namespace Gameplay {
+
+	enum class BoardState {
+		FIRST_CELL,
+		PLAYING,
+		COMPLETED,
+	};
 	class Cell;
 	class GameplayManager;
 	class Board {
 	private:
+		BoardState boardState;
 
 		GameplayManager* gameplay_manager;
 		std::default_random_engine randomEngine;
@@ -34,7 +41,10 @@ namespace Gameplay {
 
 		int countMinesAround(sf::Vector2i cell_position);
 		void populateCells();
-		bool isVaildCellPosition(sf::Vector2i cell_position);
+		bool isVaildCellPosition(sf::Vector2i first_cell_position, int x, int y);
+
+		bool isInvaildMinePosition(sf::Vector2i first_cell_position, int x, int y);
+
 		static const int minesCount = 9;
 		const std::string boardTexturePath = "assets/textures/board.png";
 
@@ -51,8 +61,8 @@ namespace Gameplay {
 		float getCellWidthInBoard() const;
 		float getCellHeightInBoard() const;
 
-		void populateBoard();
-		void populateMines();
+		void populateBoard(sf::Vector2i cell_position);
+		void populateMines(sf::Vector2i first_cell_position);
 		
 
 
@@ -69,5 +79,7 @@ namespace Gameplay {
 		void render(sf::RenderWindow& window);
 
 		void revealAllMines();
+		BoardState getBoardState() const;
+		void setBoardState(BoardState state);
 	};
 }
