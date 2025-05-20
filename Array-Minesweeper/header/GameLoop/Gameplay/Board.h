@@ -32,7 +32,7 @@ namespace Gameplay {
 		static const int numberOfRows = 9;
 		static const int numberOfColoums = 9;
 
-		int flaggerCells;
+		int flaggedCells;
 
 		const float horizontalCellPadding = 115.0f;
 		const float verticalCellPadding = 329.0f;
@@ -65,7 +65,6 @@ namespace Gameplay {
 		void populateMines(sf::Vector2i first_cell_position);
 		
 
-
 		void processCellType(sf::Vector2i cell_position);
 
 		void processEmptyCell(sf::Vector2i cell_position);
@@ -80,6 +79,8 @@ namespace Gameplay {
 
 		bool areAllCellsOpen();
 		void flagAllMines();
+
+		int getRemainingMinesCount() const;
 
 		void revealAllMines();
 		BoardState getBoardState() const;

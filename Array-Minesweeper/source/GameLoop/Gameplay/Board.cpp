@@ -71,7 +71,7 @@ namespace Gameplay
 	void Board::toggleFlag(sf::Vector2i cell_position)
 	{
 		cell[cell_position.x][cell_position.y]->toggleFlag();
-		flaggerCells += (cell[cell_position.x][cell_position.y]->getCellState() == CellState::FLAGGED) ? 1 : -1;
+		flaggedCells += (cell[cell_position.x][cell_position.y]->getCellState() == CellState::FLAGGED) ? 1 : -1;
 	}
 	float Board::getCellWidthInBoard() const
 	{
@@ -196,6 +196,11 @@ namespace Gameplay
 				}
 			}
 		}
+	}
+
+	int Board::getRemainingMinesCount() const
+	{
+		return minesCount - flaggedCells;
 	}
 	
 	void Board::processCellType(sf::Vector2i cell_position)
