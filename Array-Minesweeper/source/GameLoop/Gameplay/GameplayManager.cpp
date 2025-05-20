@@ -84,6 +84,14 @@ namespace Gameplay {
 		gameplay_ui->render(window);
 	}
 
+	void GameplayManager::restartGame()
+	{
+		game_result = GameResult::NONE;  // Clear previous result
+		board->reset();  // Reset the board
+		Time::TimeManager::initialize();  // Reset timer
+		remaining_time = max_level_duration;
+	}
+
 	void GameplayManager::setGameResult(GameResult gameResult)
 	{
 		this->game_result = gameResult;

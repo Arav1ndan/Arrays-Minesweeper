@@ -82,6 +82,8 @@ namespace Gameplay {
 
 		int getRemainingMinesCount() const;
 
+		void reset();
+
 		void revealAllMines();
 		BoardState getBoardState() const;
 		void setBoardState(BoardState state);
