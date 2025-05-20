@@ -169,6 +169,34 @@ namespace Gameplay
 		}
 	
 	}
+
+	bool Board::areAllCellsOpen()
+	{
+		int total_cells = numberOfRows * numberOfColoums;
+		int open_cells = 0;
+
+		for (int row = 0; row < numberOfRows; ++row) {
+			for (int col = 0; col < numberOfColoums; ++col) {
+				if (cell[row][col]->getCellState() == CellState::OPEN &&
+					cell[row][col]->getCellType() != CellType::MINE) {
+					open_cells++;
+				}
+			}
+		}
+		return open_cells == (total_cells - minesCount);
+	}
+
+	void Board::flagAllMines()
+	{
+		for (int row = 0; row < numberOfRows; ++row) {
+			for (int col = 0; col < numberOfColoums; ++col) {
+				if (cell[row][col]->getCellType() == CellType::MINE &&
+					cell[row][col]->getCellState() != CellState::FLAGGED) {
+					cell[row][col]->setCellState(CellState::FLAGGED);
+				}
+			}
+		}
+	}
 	
 	void Board::processCellType(sf::Vector2i cell_position)
 	{
@@ -222,8 +250,8 @@ namespace Gameplay
 	void Board::processMineCell(sf::Vector2i cell_position)
 	{
 		gameplay_manager->setGameResult(GameResult::LOST);
-		Sound::SoundManager::PlaySound(Sound::SoundType::EXPLOSION);
-		revealAllMines();
+		//Sound::SoundManager::PlaySound(Sound::SoundType::EXPLOSION);
+		//revealAllMines();
 	}
 	void Board::revealAllMines()
 	{

@@ -6,6 +6,7 @@ namespace Gameplay {
 	{
 		initialize();
 	}
+	
 	void GameplayManager::initialize()
 	{
 		initializeVariables();
@@ -25,12 +26,30 @@ namespace Gameplay {
 		background_sprite.setTexture(background_texture);
 		background_sprite.setColor(sf::Color(255, 255, 255, background_alpha));
 	}
+
+	void GameplayManager::gameWon()
+	{
+		Sound::SoundManager::PlaySound(Sound::SoundType::GAME_WON);  
+		board->flagAllMines();  
+		board->setBoardState(BoardState::COMPLETED);
+	}
+
+	void GameplayManager::gameLost()
+	{
+		Sound::SoundManager::PlaySound(Sound::SoundType::EXPLOSION);  
+		board->setBoardState(BoardState::COMPLETED);  
+		board->revealAllMines();
+	}
 	
 	void GameplayManager::update(Event::EventPollingManager& eventManager, sf::RenderWindow& window)
 	{
 		if (!hasGameEnded()) {
 			board->update(eventManager, window);
 		}
+		else if (board->getBoardState() != BoardState::COMPLETED) {
+			processGameResult();
+		}
+		
 		
 	}
 	void GameplayManager::updateRemainingTime()
@@ -48,6 +67,7 @@ namespace Gameplay {
 	{
 		updateRemainingTime();
 		board->update(eventManager, window);
+		checkGameWin();
 	}
 	void GameplayManager::render(sf::RenderWindow& window)
 	{
@@ -58,6 +78,26 @@ namespace Gameplay {
 	void GameplayManager::setGameResult(GameResult gameResult)
 	{
 		this->game_result = gameResult;
+	}
+	void GameplayManager::checkGameWin()
+	{
+		if (board->areAllCellsOpen()) {
+			game_result = GameResult::WON;
+		}
+	}
+
+	void GameplayManager::processGameResult()
+	{
+		switch (game_result) {
+		case GameResult::WON:
+			gameWon();    
+			break;
+		case GameResult::LOST:
+			gameLost();  
+			break;
+		default:
+			break;
+		}
 	}
 	
 	bool GameplayManager::hasGameEnded()
