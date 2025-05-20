@@ -83,7 +83,7 @@ namespace Gameplay
 	}
 	void Board::populateBoard(sf::Vector2i cell_position)
 	{
-		populateMines();
+		populateMines(cell_position);
 		populateCells();
 	}
 	void Board::populateMines(sf::Vector2i first_cell_position)
@@ -113,7 +113,7 @@ namespace Gameplay
 
 		for (int a = -1; a <= 1; ++a) {
 			for (int b = -1;b <= 1;b++) {
-				if ((a == 0 && b == 0) || !isVaildCellPosition(sf::Vector2i(cell_position.x + a, cell_position.y + b)))
+				if ((a == 0 && b == 0) || !isValidCellPosition(sf::Vector2i(cell_position.x + a, cell_position.y + b)))
 					continue;
 
 				if (cell[cell_position.x + a][cell_position.y + b]->getCellType() == CellType::MINE) {
@@ -136,9 +136,15 @@ namespace Gameplay
 		}
 	}
 
-	bool Board::isVaildCellPosition(sf::Vector2i first_cell_position, int x, int y)
+	bool Board::isValidCellPosition(sf::Vector2i cell_position)
 	{
-		return (x == first_cell_position.x && y == first_cell_position.y) || cell[x][y]->getCellType() == CellType::MINE;
+		return (cell_position.x >= 0 && cell_position.y >= 0 && cell_position.x < numberOfColoums && cell_position.y < numberOfRows);
+	}
+
+	bool Board::isInvaildMinePosition(sf::Vector2i first_cell_position, int x, int y)
+	{
+		return (x == first_cell_position.x && y == first_cell_position.y) ||
+			cell[x][y]->getCellType() == CellType::MINE;
 	}
 
 
@@ -198,7 +204,7 @@ namespace Gameplay
 			for (int b = -1;b <= 1;b++) {
 				sf::Vector2i next_cell_position = sf::Vector2i(a + cell_position.x, b + cell_position.y);
 
-				if ((a == 0 && b == 0) || !isVaildCellPosition(next_cell_position)) {
+				if ((a == 0 && b == 0) || !isValidCellPosition(next_cell_position)) {
 					continue;
 				}
 
