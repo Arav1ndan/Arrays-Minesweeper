@@ -1,9 +1,13 @@
 #pragma once
 #include "../../header/GameLoop/Gameplay/Board.h"
+#include "../../header/Event/EventPollingManager.h"
+#include "../../../header/Time/TimeManager.h" 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-using namespace Event;
+
 namespace Gameplay {
+    using namespace Event;
+    using namespace Time;
     enum class GameResult {
         NONE,
         WON,
@@ -24,6 +28,15 @@ namespace Gameplay {
         sf::Sprite background_sprite;
         std::string background_texture_path = "assets/textures/minesweeper_bg.png";
 
+
+        const float max_level_duration = 150.0f;
+        const float game_over_time = 11.0f;
+        float remaining_time;
+
+        void updateRemainingTime();
+        void processTimeOver();
+
+        void handleGameplay(EventPollingManager& eventManager, sf::RenderWindow& window);
         void initializeBackgroundImage();
         
         bool hasGameEnded();

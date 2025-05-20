@@ -41,7 +41,7 @@ namespace Gameplay {
 
 		int countMinesAround(sf::Vector2i cell_position);
 		void populateCells();
-		bool isVaildCellPosition(sf::Vector2i first_cell_position, int x, int y);
+		bool isValidCellPosition(sf::Vector2i cell_position);
 
 		bool isInvaildMinePosition(sf::Vector2i first_cell_position, int x, int y);
 
