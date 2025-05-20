@@ -15,6 +15,7 @@ namespace Gameplay {
 	void GameplayManager::initializeVariables()
 	{
 		board = new Board(this);
+		gameplay_ui = new GameplayUI(this);
 		remaining_time = max_level_duration;
 	}
 	
@@ -49,8 +50,14 @@ namespace Gameplay {
 		else if (board->getBoardState() != BoardState::COMPLETED) {
 			processGameResult();
 		}
+		gameplay_ui->update(getRemainingMinesCount(),
+			static_cast<int>(remaining_time),
+			eventManager, window);
 		
-		
+	}
+	int GameplayManager::getRemainingMinesCount() const
+	{
+		return board->getRemainingMinesCount();
 	}
 	void GameplayManager::updateRemainingTime()
 	{
@@ -73,6 +80,8 @@ namespace Gameplay {
 	{
 		window.draw(background_sprite);
 		board->render(window);
+
+		gameplay_ui->render(window);
 	}
 
 	void GameplayManager::setGameResult(GameResult gameResult)
