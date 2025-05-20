@@ -78,6 +78,9 @@ namespace Gameplay {
 		void update(Event::EventPollingManager& eventManager, sf::RenderWindow& window);
 		void render(sf::RenderWindow& window);
 
+		bool areAllCellsOpen();
+		void flagAllMines();
+
 		void revealAllMines();
 		BoardState getBoardState() const;
 		void setBoardState(BoardState state);

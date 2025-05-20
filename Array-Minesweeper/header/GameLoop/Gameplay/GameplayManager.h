@@ -39,10 +39,17 @@ namespace Gameplay {
         void handleGameplay(EventPollingManager& eventManager, sf::RenderWindow& window);
         void initializeBackgroundImage();
         
+        void gameWon();
+        void gameLost();
+
         bool hasGameEnded();
     public:
         GameplayManager();
         ~GameplayManager() = default;
+
+        void checkGameWin();
+        void processGameResult();
+
         void update(Event::EventPollingManager& eventManager, sf::RenderWindow& window);
         void render(sf::RenderWindow& window);
 
